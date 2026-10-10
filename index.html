@@ -1,0 +1,2359 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataVision Analytics - Directorio Educativo Bosa</title>
+    <style>
+        :root {
+            --primary-color: #0f172a;
+            --accent-color: #2563eb;
+            --accent-hover: #1d4ed8;
+            --bg-color: #fdfdfd;
+            --card-bg: #fdfdfd;
+            --text-color: #334155;
+            --border-color: #b8bebe;
+            --public-badge: #16a34a;    
+            --private-badge: #d97706;
+            --concession-badge: #0284c7;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.5;
+            padding-bottom: 40px;
+        }
+
+        /* Top Navbar */
+        .navbar {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 16px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .brand-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .brand-name {
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+        }
+
+        .brand-divider {
+            color: #64748b;
+            font-size: 1.2rem;
+        }
+
+        .brand-subtitle {
+            font-size: 0.95rem;
+            color: #94a3b8;
+            font-weight: 500;
+        }
+
+        /* Power BI Link Button */
+        .powerbi-btn {
+            background-color: #f2c811;
+            color: #000000;
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.88rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .powerbi-btn:hover {
+            background-color: #e0b700;
+            transform: translateY(-1px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 25px auto;
+            padding: 0 20px;
+        }
+
+        /* Stats Bar */
+        .stats-banner {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 12px;
+            border-radius: 8px;
+            background-color: #f1f5f9;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--accent-color);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* Controls */
+        .controls-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 25px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .search-input, .select-input {
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-input {
+            flex: 2;
+            min-width: 200px;
+        }
+
+        .select-input {
+            flex: 1;
+            min-width: 150px;
+            background-color: white;
+            cursor: pointer;
+        }
+
+        .search-input:focus, .select-input:focus {
+            border-color: var(--accent-color);
+        }
+
+        .view-toggle {
+            display: flex;
+            background-color: #f1f5f9;
+            padding: 4px;
+            border-radius: 8px;
+            gap: 4px;
+        }
+
+        .toggle-btn {
+            border: none;
+            background: transparent;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            color: #64748b;
+            transition: all 0.2s;
+        }
+
+        .toggle-btn.active {
+            background-color: white;
+            color: var(--accent-color);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        /* Badges */
+        .badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: white;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .badge.público { background-color: var(--public-badge); }
+        .badge.privado { background-color: var(--private-badge); }
+        .badge.en-administración, .badge.concesión { background-color: var(--concession-badge); }
+
+        /* Grid / Card View */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .card-body p {
+            font-size: 0.88rem;
+            margin-bottom: 6px;
+        }
+
+        .btn-detail {
+            width: 100%;
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f1f5f9;
+            color: var(--accent-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-detail:hover {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        /* Table View */
+        .table-container {
+            background-color: white;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background-color: #f8fafc;
+            color: #475569;
+            font-weight: 700;
+            padding: 14px 16px;
+            border-bottom: 2px solid var(--border-color);
+            text-transform: uppercase;
+            font-size: 0.75rem;
+        }
+
+        td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        tr:hover {
+            background-color: #f8fafc;
+        }
+
+        /* Modal Ficha Interactiva */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-card {
+            background: white;
+            border-radius: 16px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px;
+            position: relative;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            border: none;
+            background: #f1f5f9;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .modal-header {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f1f5f9;
+        }
+
+        .modal-title {
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+
+        .modal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        .modal-field {
+            background: #f8fafc;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .modal-field-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .modal-field-value {
+            font-size: 0.92rem;
+            color: var(--text-color);
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Encabezado DataVision Analytics -->
+    <nav class="navbar">
+        <div class="brand-container">
+            <span class="brand-name">DataVision Analytics</span>
+            <span class="brand-divider">|</span>
+            <span class="brand-subtitle">Directorio Educativo Completo - Localidad de Bosa</span>
+        </div>
+        <!-- Botón del KPI en Power BI -->
+        <a id="powerBiLink" href="https://app.powerbi.com/" target="_blank" class="powerbi-btn">
+            📊 Ver KPI Power BI
+        </a>
+    </nav>
+
+    <div class="container">
+        <!-- Tarjeta Estadísticas -->
+        <section class="stats-banner">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">115</div>
+                    <div class="stat-label">Total Colegios</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">32</div>
+                    <div class="stat-label">Distritales (Públicos)</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">10</div>
+                    <div class="stat-label">En Administración</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">75</div>
+                    <div class="stat-label">Privados</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filtros y Alternador de Vistas -->
+        <div class="controls-card">
+            <div class="filter-group">
+                <input type="text" id="searchInput" class="search-input" placeholder="Buscar por colegio o barrio...">
+                <select id="sectorFilter" class="select-input">
+                    <option value="todos">Todos los sectores</option>
+                    <option value="Público">Público (Distrital)</option>
+                    <option value="Privado">Privado</option>
+                    <option value="En Administración">En Administración</option>
+                </select>
+            </div>
+            <div class="view-toggle">
+                <button class="toggle-btn active" id="btnCardsView" onclick="setView('cards')">Tarjetas</button>
+                <button class="toggle-btn" id="btnTableView" onclick="setView('table')">Tabla</button>
+            </div>
+        </div>
+
+        <!-- Contenedores de Vistas -->
+        <div id="cardsView" class="grid-container"></div>
+        <div id="tableView" class="table-container" style="display: none;"></div>
+    </div>
+
+    <!-- Modal de Ficha Interactiva -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div class="modal-header">
+                <h2 class="modal-title" id="mNombre"></h2>
+                <span class="badge" id="mTipo"></span>
+            </div>
+            <div class="modal-grid">
+                <div class="modal-field">
+                    <div class="modal-field-label">Barrio</div>
+                    <div class="modal-field-value" id="mBarrio"></div>
+                </div>
+                <div class="modal-field">
+                    <div class="modal-field-label">Valor Pensión</div>
+                    <div class="modal-field-value" id="mPension"></div>
+                </div>
+                <div class="modal-field">
+                    <div class="modal-field-label">Jornada</div>
+                    <div class="modal-field-value" id="mJornada"></div>
+                </div>
+                <div class="modal-field">
+                    <div class="modal-field-label">Dirección</div>
+                    <div class="modal-field-value" id="mDireccion"></div>
+                </div>
+                <div class="modal-field">
+                    <div class="modal-field-label">Teléfono</div>
+                    <div class="modal-field-value" id="mTelefono"></div>
+                </div>
+                <div class="modal-field">
+                    <div class="modal-field-label">WhatsApp</div>
+                    <div class="modal-field-value" id="mWhatsapp"></div>
+                </div>
+                <div class="modal-field">
+                    <div class="modal-field-label">Convenio SENA</div>
+                    <div class="modal-field-value" id="mSena"></div>
+                </div>
+                <div class="modal-field full-width">
+                    <div class="modal-field-label">Infraestructura</div>
+                    <div class="modal-field-value" id="mInfraestructura"></div>
+                </div>
+                <div class="modal-field full-width">
+                    <div class="modal-field-label">Equipamiento</div>
+                    <div class="modal-field-value" id="mEquipamiento"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // =========================================================================
+        // CONFIGURACIÓN DE KPI EN POWER BI
+        // Reemplaza esta URL con el enlace de tu reporte o KPI de Power BI
+        // =========================================================================
+        const powerBiUrl = "https://app.powerbi.com/";
+        document.getElementById('powerBiLink').href = powerBiUrl;
+
+        // =========================================================================
+        // BASE DE DATOS DE COLEGIOS DE BOSA
+        // Inserta los colegios dentro de este arreglo JSON.
+        // =========================================================================
+        const colegiosDB = [
+            {
+                id: 1,
+                nombre: "Liceo Alfredo Nobel",
+                tipo: "Privado",
+                barrio: "Bosa Nova",
+                pension: "\$280.000 - \$480.000 (Aprox. según grado)",
+                infraestructura: "Edificación propia de 3 niveles, área administrativa, patio cubierto.",
+                jornada: "Mañana",
+                direccion: "Calle 62 Sur # 86 - 45",
+                telefono: "(601) 776 1234",
+                whatsapp: "+57 310 987 6543",
+                convenioSena: "si (Técnico en analitica de datos y programación)",
+                equipamiento: "Cancha múltiple, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+            },
+            {
+                id: 2,
+                nombre: "Colegio Fernando Mazuera Villegas (IED)",
+                tipo: "Público",
+                barrio: "Bosa Central",
+                pension: "Gratuita (\$0 COPB)",
+                infraestructura: "Megacolegio con múltiples bloques, áreas deportivas y comedor escolar.",
+                jornada: "Mañana / Tarde / Sabatina",
+                direccion: "Calle 68A Sur # 80H - 05",
+                telefono: "(601) 775 3108",
+                whatsapp: "+57 320 123 4567",
+                convenioSena: "Sí (Media Fortalecida en Sistemas y Contabilidad)",
+                equipamiento: "Canchas sintéticas, 3 Salas de Informática, Biblioteca pública, Laboratorios, Comedor."
+            },
+            {
+                id: 3,
+                nombre: "Colegio Alfonso López Michelsen (IED)",
+                tipo: "Público",
+                barrio: "Bosa La Libertad",
+                pension: "Gratuita (\$0 COP)",   
+                infraestructura: "Edificio de 2 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",  
+                direccion: "Calle 63 Sur # 81 - 20",
+                telefono: "(601) 776 5678",
+                whatsapp: "+57 311 234 5678",
+                convenioSena: "No",
+                equipamiento: "Cancha de fútbol, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+            },
+            {
+                id: 4,
+                nombre: "Colegio Alfonso Reyes Echandía IED",
+                tipo: "Público",
+                barrio: "Bosa La Estrella",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 3 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 65 Sur # 82 - 15",
+                telefono: "(601) 776 7890",
+                whatsapp: "+57 312 345 6789",
+                convenioSena: "Sí (Técnico en Electricidad y Electrónica)",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+            },
+            {
+                id: 5,
+                nombre: "Colegio Bosanova IED",
+                tipo: "Público",
+                barrio: "Bosa Nova",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 2 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 64 Sur # 83 - 10",
+                telefono: "(601) 776 8901",
+                whatsapp: "+57 313 456 7890",
+                convenioSena: "No",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+            },
+            {
+                id: 6,
+                nombre: "Centro Educativo Externado Simón Bolívar",
+                tipo: "Privado",
+                barrio: "Bosa La Estrella",
+                pension: "\$350.000 - \$600.000 (Aprox. según grado)",
+                infraestructura: "Edificio de 3 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 64 Sur # 83 - 10",
+                telefono: "(601) 776 8901",
+                whatsapp: "+57 313 456 7890",
+                convenioSena: "No",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+            },
+            {
+                id: 7,
+                nombre: "Colegio Argelia IED",
+                tipo: "En Administración",
+                barrio: "Bosa Argelia",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 2 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 66 Sur # 84 - 20",
+                telefono: "(601) 776 9012",
+                whatsapp: "+57 314 567 8901",
+                convenioSena: "Sí (Técnico en Mecánica Automotriz)",
+                equipamiento: "Cancha de fútbol, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+            },
+            {
+                id: 8,
+                nombre: "Colegio Brasilia Bosa IED ",
+                tipo: "Público",
+                barrio: "Bosa Brasilia",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 3 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 67 Sur # 85 - 30",
+                telefono: "(601) 776 0123",
+                whatsapp: "+57 315 678 9012",
+                convenioSena: "No",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+
+            },
+            {
+                id: 9,
+                nombre: "Colegio Carlos Albán Holguín IED ",
+                tipo: "Público",
+                barrio: "Bosa Carlos Albán Holguín",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 2 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 68 Sur # 86 - 40",
+                telefono: "(601) 776 1234",
+                whatsapp: "+57 316 789 0123",
+                convenioSena: "No",
+                equipamiento: "Cancha de fútbol, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+            },
+            {
+                id: 10,
+                nombre: "Colegio Carlos Pizarro León Gómez IED ",
+                tipo: "Público",
+                barrio: "Bosa El Recreo",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 3 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 69 Sur # 87 - 50",
+                telefono: "(601) 776 2345",
+                whatsapp: "+57 317 890 1234",
+                convenioSena: "Sí (Técnico en Electricidad y Electrónica)",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+            
+            },
+            {
+                id: 11,
+                nombre: "Colegio CEDID San Pablo IED ",
+                tipo: "Público",
+                barrio: "Bosa San Pablo",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 2 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 70 Sur # 88 - 60",
+                telefono: "(601) 776 3456",
+                whatsapp: "+57 318 901 2345",
+                convenioSena: "No",
+                equipamiento: "Cancha de fútbol, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+
+            },
+            {
+                id: 12,
+                nombre: "Colegio Ciudadela Educativa de Bosa IED ",
+                tipo: "Público",
+                barrio: "Bosa El Porvenir",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 3 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 71 Sur # 89 - 70",
+                telefono: "(601) 776 4567",
+                whatsapp: "+57 319 012 3456",
+                convenioSena: "Sí (Técnico en Mecánica Automotriz)",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+
+            },
+            {
+                id: 13,
+                nombre: "Colegio Ciudadela El Recreo Sonia Osorio de Saint-Malo IED ",
+                tipo: "Público",
+                barrio: "Bosa El Recreo",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 2 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 72 Sur # 90 - 80",
+                telefono: "(601) 776 5678",
+                whatsapp: "+57 320 123 4567",
+                convenioSena: "No",
+                equipamiento: "Cancha de fútbol, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+            },
+            {
+                id: 14,
+                nombre: "Colegio De La Bici IED ",
+                tipo: "Público",
+                barrio: "Bosa Argelia",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 3 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 73 Sur # 91 - 90",
+                telefono: "(601) 776 6789",
+                whatsapp: "+57 321 234 5678",
+                convenioSena: "Sí (Técnico en Electricidad y Electrónica)",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias." 
+            },
+            {
+                id: 15,
+                nombre: "Colegio Débora Arango Pérez IED ",
+                tipo: "Público",
+                barrio: "Bosa La Paz",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 2 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 74 Sur # 92 - 100",
+                telefono: "(601) 776 7890",
+                whatsapp: "+57 322 345 6789",
+                convenioSena: "No",
+                equipamiento: "Cancha de fútbol, Sala de computación, Biblioteca, Laboratorio de Ciencias." 
+
+            },
+            {
+                id: 16,
+                nombre: "Colegio El Porvenir IED",
+                tipo: "Público",
+                barrio: "Bosa El Porvenir",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 3 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 75 Sur # 93 - 110",
+                telefono: "(601) 776 8901",
+                whatsapp: "+57 323 456 7890",
+                convenioSena: "Sí (Técnico en Mecánica Automotriz)",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+                
+            },
+            {
+                id: 17,
+                nombre: "Colegio Esmeralda Arboleda Cadavid IED",
+                tipo: "Público",
+                barrio: "Bosa Islandia",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 2 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 76 Sur # 94 - 120",
+                telefono: "(601) 776 9012",
+                whatsapp: "+57 324 567 8901",
+                convenioSena: "No",
+                equipamiento: "Cancha de fútbol, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+
+            },
+            {
+                id: 18,
+                nombre: "Colegio Francisco de Paula Santander IED",
+                tipo: "Público",
+                barrio: "Bosa Centro",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 3 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 77 Sur # 95 - 130",
+                telefono: "(601) 776 0123",
+                whatsapp: "+57 325 678 9012",
+                convenioSena: "Sí (Técnico en Electricidad y Electrónica)",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+
+            },
+            {
+                id: 19,
+                nombre: "Colegio Germán Arciniegas IED ",
+                tipo: "Público",
+                barrio: "Bosa Brasil",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 2 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 78 Sur # 96 - 140",
+                telefono: "(601) 776 1234",
+                whatsapp: "+57 326 789 0123",
+                convenioSena: "No",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias." 
+
+            },
+            {
+                id: 20,
+                nombre: "Colegio Grancolombiano IED ",
+                tipo: "Público",
+                barrio: "Bosa Palestina",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 3 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 79 Sur # 97 - 150",
+                telefono: "(601) 776 2345",
+                whatsapp: "+57 327 890 1234",
+                convenioSena: "Sí (Técnico en Mecánica Automotriz)",
+                equipamiento: "Cancha de fútbol, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+
+            },
+            {
+                id: 20,
+                nombre: "Colegio José Antonio Galán IED ",
+                tipo: "Público",
+                barrio: "Bosa José Antonio Galán",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 2 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 80 Sur # 98 - 160",
+                telefono: "(601) 776 3456",
+                whatsapp: "+57 328 901 2345",
+                convenioSena: "No",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+            },
+            {
+                id: 21,
+                nombre: "Colegio José Francisco Socarrás IED ",
+                tipo: "Público",
+                barrio: "Bosa San Antonio",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 3 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 81 Sur # 99 - 170",
+                telefono: "(601) 776 4567",
+                whatsapp: "+57 329 012 3456",
+                convenioSena: "Sí (Técnico en Electricidad y Electrónica)",
+                equipamiento: "Cancha de fútbol, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+
+            },
+            {
+                id: 22,
+                nombre: "Colegio Kimi Pernía Domicó IED ",
+                tipo: "Público",
+                barrio: "Bosa El Porvenir",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 2 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 82 Sur # 100 - 180",
+                telefono: "(601) 776 5678",
+                whatsapp: "+57 330 123 4567",
+                convenioSena: "No",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+
+            },
+            {
+                id: 23,
+                nombre: "Colegio La Concepción IED",
+                tipo: "Público",
+                barrio: "Bosa La Concepción",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 3 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 83 Sur # 101 - 190",
+                telefono: "(601) 776 6789",
+                whatsapp: "+57 331 234 5678",
+                convenioSena: "No",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+
+            },
+            {
+                id: 24,
+                nombre: "Colegio Laura Herrera de Varela IED",
+                tipo: "Público",
+                barrio: "Bosa Brasilia",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 2 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 84 Sur # 102 - 200",
+                telefono: "(601) 776 7890",
+                whatsapp: "+57 332 345 6789",
+                convenioSena: "Sí (Técnico en Mecánica Automotriz)",
+                equipamiento: "Cancha de fútbol, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+
+            },
+            {
+                id: 25,
+                nombre: "Colegio Leonardo Posada Pedraza IED ",
+                tipo: "Público",
+                barrio: "Bosa San Bernardino",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 3 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 85 Sur # 103 - 210",
+                telefono: "(601) 776 8901",
+                whatsapp: "+57 333 456 7890",
+                convenioSena: "No",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+
+            },
+            {
+                id: 26,
+                nombre: "Colegio Nuevo Chile IED ",
+                tipo: "Público",
+                barrio: "Bosa Nuevo Chile",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 2 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 86 Sur # 104 - 220",
+                telefono: "(601) 776 9012",
+                whatsapp: "+57 334 567 8901",
+                convenioSena: "Sí (Técnico en Electricidad y Electrónica)",
+                equipamiento: "Cancha de fútbol, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+
+            },
+            {
+                id: 27,
+                nombre: "Colegio Orlando Higuita Rojas IED",
+                tipo: "Público",
+                barrio: "Bosa Holanda",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 2 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 86 Sur # 104 - 220",
+                telefono: "(601) 776 9012",
+                whatsapp: "+57 334 567 8901",
+                convenioSena: "Sí (Técnico en Electricidad y Electrónica)",
+                equipamiento: "Cancha de fútbol, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+
+            },
+            {
+                id: 28,
+                nombre: "Colegio Pablo de Tarso IED ",
+                tipo: "Público",
+                barrio: "Bosa San Pablo",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 3 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 87 Sur # 105 - 230",
+                telefono: "(601) 776 0123",
+                whatsapp: "+57 335 678 9012",
+                convenioSena: "No",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias." 
+
+            },
+            {
+                id: 29,
+                nombre: "Colegio Porfirio Barba Jacob IED ",
+                tipo: "Público",
+                barrio: "Bosa Palestina",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 2 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 88 Sur # 106 - 240",
+                telefono: "(601) 776 1234",
+                whatsapp: "+57 336 789 0123",
+                convenioSena: "Sí (Técnico en Mecánica Automotriz)",
+                equipamiento: "Cancha de fútbol, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+
+            },
+            {
+                id: 30,
+                nombre: "Colegio San Bernardino IED ",
+                tipo: "Público",
+                barrio: "Bosa San Bernardino",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 3 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 89 Sur # 107 - 250",
+                telefono: "(601) 776 2345",
+                whatsapp: "+57 337 890 1234",
+                convenioSena: "No",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+
+            },
+            {
+                id: 31,
+                nombre: "Colegio San José de Maryland IED ",
+                tipo: "Público",
+                barrio: "Bosa San Bernardino",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 2 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 90 Sur # 108 - 260",
+                telefono: "(601) 776 3456",
+                whatsapp: "+57 338 901 2345",
+                convenioSena: "Sí (Técnico en Electricidad y Electrónica)",
+                equipamiento: "Cancha de fútbol, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+
+            },
+            {
+                id: 32,
+                nombre: "Colegio Villas del Progreso IED",
+                tipo: "Público",
+                barrio: "Bosa Villas del Progreso",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 3 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 91 Sur # 109 - 270",
+                telefono: "(601) 776 4567",
+                whatsapp: "+57 339 012 3456",
+                convenioSena: "No",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+
+            },
+            {
+                id: 33,
+                nombre: "Colegio Jorge Isaacs IED",
+                tipo: "Público",
+                barrio: "Bosa San Bernardino",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 3 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 92 Sur # 110 - 280",
+                telefono: "(601) 776 5678",
+                whatsapp: "+57 340 123 4567",
+                convenioSena: "No",
+                equipamiento: "Cancha de fútbol, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+
+            },
+            {
+                id: 34,
+                nombre: "Colegio Bicentenario de la Independencia IED ",
+                tipo: "En Administración",
+                barrio: "Bosa Laureles",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 2 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 93 Sur # 111 - 290",
+                telefono: "(601) 776 6789",
+                whatsapp: "+57 341 234 5678",
+                convenioSena: "Sí (Técnico en Mecánica Automotriz)",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+
+            },
+            {
+                id: 35,
+                nombre: "3.	Colegio La Esperanza IED",
+                tipo: "En Administración",
+                barrio: "Bosa Laureles",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 2 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 94 Sur # 112 - 300",
+                telefono: "(601) 776 7890",
+                whatsapp: "+57 342 345 6789",
+                convenioSena: "Sí (Técnico en Electricidad y Electrónica)",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+
+            },
+            {
+                id: 36,
+                nombre: "Colegio Laurel de Cera IED ",
+                tipo: "En Administración",
+                barrio: "Bosa El Jardín",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 2 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 95 Sur # 113 - 310",
+                telefono: "(601) 776 8901",
+                whatsapp: "+57 343 456 7890",
+                convenioSena: "Sí (Técnico en Mecánica Automotriz)",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias." 
+
+            },
+            {
+                id: 37,
+                nombre: "Colegio Los Naranjos IED",
+                tipo: "En Administración",
+                barrio: "Bosa Los Naranjos",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 3 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 96 Sur # 114 - 320",
+                telefono: "(601) 776 9012",
+                whatsapp: "+57 344 567 8901",
+                convenioSena: "Sí (Técnico en Electricidad y Electrónica)",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+
+            },
+            {
+                id: 38,
+                nombre: "Colegio Parques de Bogotá IED ",
+                tipo: "En Administración",
+                barrio: "Bosa Parques de Bogotá",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 3 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 97 Sur # 115 - 330",
+                telefono: "(601) 776 9123",
+                whatsapp: "+57 345 678 9012",
+                convenioSena: "Sí (Técnico en Mecánica Automotriz)",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias." 
+
+            },
+            {
+                id: 39,
+                nombre: "Colegio San Ignacio IED",
+                tipo: "En Administración",
+                barrio: "Bosa San Miguel",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 2 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 98 Sur # 116 - 340",
+                telefono: "(601) 776 9234",
+                whatsapp: "+57 346 789 0123",
+                convenioSena: "Sí (Técnico en Electricidad y Electrónica)",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+
+            },
+            {
+                id: 40,
+                nombre: "Colegio Santiago de las Atalayas IED ",
+                tipo: "En Administración",
+                barrio: "Bosa Atalayas",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 3 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 99 Sur # 117 - 350",
+                telefono: "(601) 776 9345",
+                whatsapp: "+57 347 890 1234",
+                convenioSena: "Sí (Técnico en Mecánica Automotriz)",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+
+            },
+            {
+                id: 41,
+                nombre: "Colegio Soledad Acosta de Samper IED",
+                tipo: "En Administración",
+                barrio: "Bosa El Porvenir",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 2 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 100 Sur # 118 - 360",
+                telefono: "(601) 776 9456",
+                whatsapp: "+57 348 901 2345",
+                convenioSena: "Sí (Técnico en Electricidad y Electrónica)",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+                
+            },
+            {
+                id: 42,
+                nombre: "Colegio Jorge Isaacs IED",
+                tipo: "En Administración",
+                barrio: "Bosa San Bernardino",
+                pension: "Gratuita (\$0 COP)",
+                infraestructura: "Edificio de 2 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 101 Sur # 119 - 370",
+                telefono: "(601) 776 9567",
+                whatsapp: "+57 349 012 3456",
+                convenioSena: "Sí (Técnico en Mecánica Automotriz)",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+
+            },
+            {
+                id: 43,
+                nombre: "Centro Educativo Formal para Adultos Los Sauces ",
+                tipo: "Privado",
+                barrio: "Bosa Brasilia",
+                pension: "\$400.000 - \$700.000 (Aprox. según grado)",
+                infraestructura: "Edificio de 2 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana",
+                direccion: "Calle 102 Sur # 120 - 380",
+                telefono: "(601) 776 9678",
+                whatsapp: "+57 350 123 4567",
+                convenioSena: "No",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+            },
+            {
+                id: 44,
+                nombre: "Centro Educativo Wilfredo Lehner",
+                tipo: "Privado",
+                barrio: "Bosa Azucena",
+                pension: "\$450.000 - \$750.000 (Aprox. según grado)",
+                infraestructura: "Edificio de 3 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Tarde",
+                direccion: "Calle 103 Sur # 121 - 390",
+                telefono: "(601) 776 9789",
+                whatsapp: "+57 351 234 5678",
+                convenioSena: "No",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+            },
+            {
+                id: 45,
+                nombre: "Centro Johann Kepler",
+                tipo: "Privado",
+                barrio: "Bosa Nova",
+                pension: "\$400.000 - \$600.000 (Aprox. según grado)",
+                infraestructura: "Edificio de 2 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 104 Sur # 122 - 400",
+                telefono: "(601) 776 9890",
+                whatsapp: "+57 352 345 6789",
+                convenioSena: "No",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+
+            },
+            {
+                id: 46,
+                nombre: "Colegio Andrés Rosillo ",
+                tipo: "Privado",
+                barrio: "Bosa Estación",
+                pension: "\$300.000 - \$550.000 (Aprox. según grado)",
+                infraestructura: "Edificio de 3 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 104 Sur # 122 - 400",
+                telefono: "(601) 776 9890",
+                whatsapp: "+57 352 345 6789",
+                convenioSena: "No",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias." 
+
+            },
+            {
+                id: 47,
+                nombre: "Colegio Bilingüe Reino Unido",
+                tipo: "Privado",
+                barrio: "Bosa Villa Del Rio",
+                pension: "\$400.000 - \$700.000 (Aprox. según grado)",
+                infraestructura: "Edificio de 3 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 104 Sur # 122 - 400",
+                telefono: "(601) 776 9890",
+                whatsapp: "+57 352 345 6789",
+                convenioSena: "No",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias." 
+
+            },
+            {
+                id: 48,
+                nombre: "Colegio Claretiano ",
+                tipo: "Privado",
+                barrio: "Bosa Centro",
+                pension: "\$350.000 - \$600.000 (Aprox. según grado)",
+                infraestructura: "Edificio de 2 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana",
+                direccion: "Calle 104 Sur # 122 - 400",
+                telefono: "(601) 776 9890",
+                whatsapp: "+57 352 345 6789",
+                convenioSena: "No",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias." 
+
+            }, 
+            {
+                id: 49,
+                nombre: "Colegio Claretiano El Libertador ",
+                tipo: "Privado",
+                barrio: "Bosa Centro",
+                pension: "\$350.000 - \$600.000 (Aprox. según grado)",
+                infraestructura: "Edificio de 2 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana",
+                direccion: "Calle 104 Sur # 122 - 400",
+                telefono: "(601) 776 9890",
+                whatsapp: "+57 352 345 6789",
+                convenioSena: "No",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias." 
+
+            },
+            {
+                id: 50,
+                nombre: "Colegio Colombo Japonés",
+                tipo: "Privado",
+                barrio: "Bosa Estancia",
+                pension: "\$400.000 - \$700.000 (Aprox. según grado)",
+                infraestructura: "Edificio de 3 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana",
+                direccion: "Calle 104 Sur # 122 - 400",
+                telefono: "(601) 776 9890",
+                whatsapp: "+57 352 345 6789",
+                convenioSena: "No",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias." 
+
+            },
+            {
+                id: 51,
+                nombre: "Colegio Colsubsidio Chicalá",
+                tipo: "Privado",
+                barrio: "Bosa Betania",
+                pension: "\$400.000 - \$700.000 (Aprox. según grado)",
+                infraestructura: "Edificio de 3 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana",
+                direccion: "Calle 104 Sur # 122 - 400",
+                telefono: "(601) 776 9890",
+                whatsapp: "+57 352 345 6789",
+                convenioSena: "No",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias." 
+
+            },
+            {
+                id: 52,
+                nombre: "Colegio Comunitario Nocturno de Bachillerato La Libertad",
+                tipo: "Privado",
+                barrio: "Bosa La Libertad",
+                pension: "\$400.000 - \$650.000 (Aprox. según grado)",
+                infraestructura: "Edificio de 3 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Noche",
+                direccion: "Calle 104 Sur # 122 - 400",
+                telefono: "(601) 776 9890",
+                whatsapp: "+57 352 345 6789",
+                convenioSena: "No",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias." 
+                    
+            },
+            {
+                id: 53,
+                nombre: "Colegio El Paraíso",
+                tipo: "Privado",
+                barrio: "Bosa El Paraíso",
+                pension: "\$300.000 - \$550.000 (Aprox. según grado)",
+                infraestructura: "Edificio de 3 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana",
+                direccion: "Calle 104 Sur # 122 - 400",
+                telefono: "(601) 776 9890",
+                whatsapp: "+57 352 345 6789",
+                convenioSena: "No",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias." 
+                    
+            },
+            {
+                id: 54,
+                nombre: "Colegio Estancia de Bosa",
+                tipo: "Privado",
+                barrio: "Bosa Nova",
+                pension: "\$250.000 - \$450.000 (Aprox. según grado)",
+                infraestructura: "Edificio de 3 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 104 Sur # 122 - 400",
+                telefono: "(601) 776 9890",
+                whatsapp: "+57 352 345 6789",
+                convenioSena: "No",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias." 
+                    
+            },
+            {
+                id: 55,
+                nombre: "Colegio Francisco I",
+                tipo: "Privado",
+                barrio: "Bosa Brasilia",
+                pension: "\$300.000 - \$600.000 (Aprox. según grado)",
+                infraestructura: "Edificio de 3 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 104 Sur # 122 - 400",
+                telefono: "(601) 776 9890",
+                whatsapp: "+57 352 345 6789",
+                convenioSena: "No",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias." 
+                    
+            },
+            {
+                id: 56,
+                nombre: "Colegio Giovanni Antonio Farina",
+                tipo: "Privado",
+                barrio: "Bosa Estación",
+                pension: "\$300.000 - \$600.000 (Aprox. según grado)",
+                infraestructura: "Edificio de 3 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 104 Sur # 122 - 400",
+                telefono: "(601) 776 9890",
+                whatsapp: "+57 352 345 6789",
+                convenioSena: "No",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias." 
+                    
+            },
+            {
+                id: 57,
+                nombre: "Colegio Inmaculado Corazón de María",
+                tipo: "Privado",
+                barrio: "Bosa Centro",
+                pension: "\$300.000 - \$600.000 (Aprox. según grado)",
+                infraestructura: "Edificio de 3 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 104 Sur # 122 - 400",
+                telefono: "(601) 776 9890",
+                whatsapp: "+57 352 345 6789",
+                convenioSena: "No",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias." 
+                    
+            },
+            {
+                id: 58,
+                nombre: "Colegio Mixto Ciudadanos del Futuro ",
+                tipo: "Privado",
+                barrio: "Bosa La Libertad",
+                pension: "\$350.000 - \$650.000 (aprox. según grado)",
+                infraestructura: "Edificio de 3 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana",
+                direccion: "Calle 104 Sur # 154 - 311",
+                telefono: "(601) 786 7856",
+                whatsapp: "+57 353 475 9729",
+                convenioSena: "No",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias." 
+
+            },
+            {
+                id: 59,
+                nombre: "Colegio Mixto Alegría y Saber",
+                tipo: "Privado",
+                barrio: "Bosa La Libertad",
+                pension: "\$450.000 - \$750.000 (aprox. según grado)",
+                infraestructura: "Edificio de 3 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana",
+                direccion: "Calle 108 Sur # 119 - 399",
+                telefono: "(601) 711 1259",
+                whatsapp: "+57 313 777 9780",
+                convenioSena: "No",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias." 
+
+            },
+            {
+                id: 60,
+                nombre: "Colegio Mixto Villa Carolina",
+                tipo: "Privado",
+                barrio: "Bosa La Concepción",
+                pension: "\$250.000 - \$550.000 (aprox. según grado)",
+                infraestructura: "Edificio de 3 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana",
+                direccion: "Calle 108 Sur # 456 - 789",
+                telefono: "(601) 914 6050",
+                whatsapp: "+57 311 907 1852",
+                convenioSena: "No",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias." 
+
+            },
+            {
+                id: 61,
+                nombre: "Colegio Nuestra Señora de Nazareth",
+                tipo: "Privado",
+                barrio: "Bosa Centro",
+                pension: "\$400.000 - \$750.000 (aprox. según grado)",
+                infraestructura: "Edificio de 3 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "Mañana",
+                direccion: "Calle 108 Sur # 140 - 789",
+                telefono: "(601) 152 9845",
+                whatsapp: "+57 300 254 3852",
+                convenioSena: "No",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias." 
+                
+            },
+            {
+                id: 62,
+                nombre: "Colegio Nueva Colombia Grande",
+                tipo: "Privado",
+                barrio: "Bosa Gran Colombiano",
+                pension: "\$ 350.000 - \$600.000 (aprox. según grado)",
+                infraestructura: "Edificio de 4 niveles, patio central, áreas verdes y cancha múltiple.",
+                jornada: "mañana",
+                direccion: "Calle 208 Sur # 458 - 299",
+                telefono: "(601) 752 9245",
+                whatsapp: "+57 314 544 2152",
+                convenioSena: "No",
+                equipamiento: "Cancha de baloncesto, Sala de computación, Biblioteca, Laboratorio de Ciencias."
+
+
+            },
+            {
+                id: 63,
+                nombre: "Colegio Gimnasio Sabiduría del Futuro",
+                tipo: "Privado",
+                barrio: "Bosa Porvenir",
+                pension: "$320.000 - $580.000 (Aprox. según grado)",
+                infraestructura: "Sede de 3 pisos, patio de recreo cubierto, aulas interactivas y área administrativa.",
+                jornada: "Mañana",
+                direccion: "Calle 54 Sur # 95A - 12",
+                telefono: "(601) 774 1020",
+                whatsapp: "+57 315 234 8901",
+                convenioSena: "No",
+                equipamiento: "Cancha múltiple, Sala de informática, Laboratorio de química, Biblioteca escolar."
+            },
+            {
+                id: 64,
+                nombre: "Colegio Humanista Jalil Gibrán",
+                tipo: "Privado",
+                barrio: "Bosa Centro",
+                pension: "$380.000 - $650.000 (Aprox. según grado)",
+                infraestructura: "Sede colonial adaptada, patio central ajardinado, auditorio pequeño.",
+                jornada: "Mañana / Tarde",
+                direccion: "Carrera 80 # 61 Sur - 34",
+                telefono: "(601) 775 8890",
+                whatsapp: "+57 310 456 1234",
+                convenioSena: "Sí (Técnico en Producción Textil)",
+                equipamiento: "Biblioteca, Taller de artes, Sala de cómputo, Salón de danza."
+            },
+            {
+                id: 65,
+                nombre: "Colegio INETEC",
+                tipo: "Privado",
+                barrio: "Bosa La Libertad",
+                pension: "$290.000 - $520.000 (Aprox. según grado)",
+                infraestructura: "Edificio moderno de 4 pisos, talleres técnicos y aulas inteligentes.",
+                jornada: "Mañana / Tarde / Sabatina",
+                direccion: "Calle 73 Sur # 88 C - 45",
+                telefono: "(601) 776 3311",
+                whatsapp: "+57 318 901 3456",
+                convenioSena: "Sí (Técnico en Programación de Software)",
+                equipamiento: "2 Salas de sistemas, Laboratorio de electrónica, Biblioteca digital, Cancha polideportiva."
+            },
+            {
+                id: 66,
+                nombre: "Colegio José Ortega y Gasset",
+                tipo: "Privado",
+                barrio: "Bosa Brasilia",
+                pension: "$340.000 - $610.000 (Aprox. según grado)",
+                infraestructura: "Instalaciones de 3 niveles con terraza deportiva y aula máxima.",
+                jornada: "Mañana",
+                direccion: "Carrera 87 B # 54 Sur - 10",
+                telefono: "(601) 777 4455",
+                whatsapp: "+57 312 678 9012",
+                convenioSena: "No",
+                equipamiento: "Laboratorio de ciencias, Sala de sistemas, Biblioteca, Parque infantil."
+            },
+            {
+                id: 67,
+                nombre: "Colegio Miguel Ángel Asturias",
+                tipo: "Privado",
+                barrio: "Bosa Bosa Nova",
+                pension: "$310.000 - $540.000 (Aprox. según grado)",
+                infraestructura: "Edificación propia de 2 niveles, patio cubierto y cafetería.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 62 Sur # 82 A - 19",
+                telefono: "(601) 778 2211",
+                whatsapp: "+57 314 345 6789",
+                convenioSena: "No",
+                equipamiento: "Cancha de microfútbol, Sala de computación, Laboratorio de física."
+            },
+            {
+                id: 68,
+                nombre: "Colegio Psicopedagógico El Futuro de Villa del Río",
+                tipo: "Privado",
+                barrio: "Bosa Villa del Río",
+                pension: "$410.000 - $690.000 (Aprox. según grado)",
+                infraestructura: "Sede de 3 plantas, amplias zonas lúdicas y zona de estimulación temprana.",
+                jornada: "Mañana",
+                direccion: "Diagonal 57 Sur # 68 B - 22",
+                telefono: "(601) 779 0012",
+                whatsapp: "+57 316 789 0123",
+                convenioSena: "No",
+                equipamiento: "Gimnasio infantil, Sala de cómputo, Biblioteca, Comedor escolar."
+            },
+            {
+                id: 69,
+                nombre: "Colegio Rosa Agazzi",
+                tipo: "Privado",
+                barrio: "Bosa El Recreo",
+                pension: "$300.000 - $510.000 (Aprox. según grado)",
+                infraestructura: "Casa campestre adaptada de 2 pisos, jardines internos y parque infantil.",
+                jornada: "Mañana",
+                direccion: "Carrera 98 A # 71 Sur - 15",
+                telefono: "(601) 780 4433",
+                whatsapp: "+57 311 234 5678",
+                convenioSena: "No",
+                equipamiento: "Parque infantil, Salón de estimulación, Sala de lectura, Sala de sistemas."
+            },
+            {
+                id: 70,
+                nombre: "Colegio Sabiduría del Futuro",
+                tipo: "Privado",
+                barrio: "Bosa Laureles",
+                pension: "$280.000 - $490.000 (Aprox. según grado)",
+                infraestructura: "Edificio de 3 pisos, patio central de juegos y área administrativa.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 75 Sur # 80 # 30",
+                telefono: "(601) 781 9988",
+                whatsapp: "+57 313 567 8901",
+                convenioSena: "No",
+                equipamiento: "Cancha múltiple, Sala de computación, Biblioteca escolar."
+            },
+            {
+                id: 71,
+                nombre: "Colegio Suramericano Marbeth",
+                tipo: "Privado",
+                barrio: "Bosa San Bernardino",
+                pension: "$360.000 - $620.000 (Aprox. según grado)",
+                infraestructura: "Instalaciones modernas de 4 niveles, terraza deportiva sintética y enfermería.",
+                jornada: "Mañana",
+                direccion: "Carrera 88 D # 78 Sur - 11",
+                telefono: "(601) 782 5544",
+                whatsapp: "+57 317 890 1234",
+                convenioSena: "Sí (Técnico en Contabilidad)",
+                equipamiento: "Cancha sintética en terraza, 2 Laboratorios de cómputo, Laboratorio integrado de Ciencias."
+            },
+            {
+                id: 72,
+                nombre: "Colegio Tecnisistemas – Sede Bosa",
+                tipo: "Privado",
+                barrio: "Bosa Centro",
+                pension: "$330.000 - $590.000 (Aprox. según grado)",
+                infraestructura: "Sede comercial-educativa de 3 pisos equipada con servidores y red de alta velocidad.",
+                jornada: "Mañana / Tarde / Noche",
+                direccion: "Calle 63 Sur # 80 A - 40",
+                telefono: "(601) 783 1122",
+                whatsapp: "+57 319 012 3456",
+                convenioSena: "Sí (Técnico en Sistemas y Redes)",
+                equipamiento: "3 Salas de informática avanzadas, Biblioteca digital, Auditorio."
+            },
+            {
+                id: 73,
+                nombre: "Gimnasio Cáceres",
+                tipo: "Privado",
+                barrio: "Bosa Piamonte",
+                pension: "$350.000 - $630.000 (Aprox. según grado)",
+                infraestructura: "Edificio institucional de 3 niveles con cancha techada.",
+                jornada: "Mañana",
+                direccion: "Carrera 78 C # 68 Sur - 50",
+                telefono: "(601) 784 6677",
+                whatsapp: "+57 315 678 9012",
+                convenioSena: "No",
+                equipamiento: "Cancha múltiple cubiertas, Sala de informática, Laboratorio de Ciencias."
+            },
+            {
+                id: 74,
+                nombre: "Gimnasio Los Sauces",
+                tipo: "Privado",
+                barrio: "Bosa Islandia",
+                pension: "$370.000 - $640.000 (Aprox. según grado)",
+                infraestructura: "Sede campestre adaptada con áreas verdes y huerta escolar.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 71 Sur # 86 A - 18",
+                telefono: "(601) 785 2233",
+                whatsapp: "+57 320 456 7890",
+                convenioSena: "No",
+                equipamiento: "Cancha de grama natural, Huerta ecológica, Sala de sistemas, Biblioteca."
+            },
+            {
+                id: 75,
+                nombre: "Gimnasio Real Americano",
+                tipo: "Privado",
+                barrio: "Bosa Carbonell",
+                pension: "$400.000 - $710.000 (Aprox. según grado)",
+                infraestructura: "Edificio moderno de 4 niveles con anfiteatro y cancha polideportiva.",
+                jornada: "Mañana",
+                direccion: "Carrera 77 G # 70 Sur - 25",
+                telefono: "(601) 786 8899",
+                whatsapp: "+57 321 234 5678",
+                convenioSena: "Sí (Técnico en Analytics de Datos)",
+                equipamiento: "Cancha de baloncesto, Sala de robótica y sistemas, Biblioteca, Laboratorio de física y química."
+            },
+            {
+                id: 76,
+                nombre: "Gimnasio Santa Rocío",
+                tipo: "Privado",
+                barrio: "Bosa Palestina",
+                pension: "$310.000 - $530.000 (Aprox. según grado)",
+                infraestructura: "Sede tradicional de 2 niveles con patio interior amplio.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 68A Sur # 81 D - 09",
+                telefono: "(601) 787 4411",
+                whatsapp: "+57 322 890 1234",
+                convenioSena: "No",
+                equipamiento: "Cancha de microfútbol, Sala de cómputo, Salón de artes."
+            },
+            {
+                id: 77,
+                nombre: "Gimnasio Garabatos de Colores",
+                tipo: "Privado",
+                barrio: "Bosa San José",
+                pension: "$270.000 - $460.000 (Aprox. según grado)",
+                infraestructura: "Sede infantil especializada de 2 niveles con parque de pelotas y salas lúdicas.",
+                jornada: "Mañana / Tarde",
+                direccion: "Carrera 81 H # 73 Sur - 31",
+                telefono: "(601) 788 3322",
+                whatsapp: "+57 323 123 4567",
+                convenioSena: "No",
+                equipamiento: "Parque infantil interactivo, Salón de música, Biblioteca infantil, Sala de estimulación."
+            },
+            {
+                id: 78,
+                nombre: "Gimnasio Infantil Yayita",
+                tipo: "Privado",
+                barrio: "Bosa Holanda",
+                pension: "$260.000 - $440.000 (Aprox. según grado)",
+                infraestructura: "Casa preescolar adaptada, acondicionada para primera infancia y preescolar.",
+                jornada: "Mañana",
+                direccion: "Calle 58 Sur # 87 B - 14",
+                telefono: "(601) 789 9900",
+                whatsapp: "+57 324 567 8901",
+                convenioSena: "No",
+                equipamiento: "Rincón de lectura infantil, Zona de juegos blandos, Comedor escolar."
+            },
+            {
+                id: 79,
+                nombre: "Gimnasio Martín Galeano",
+                tipo: "Privado",
+                barrio: "Bosa La Estación",
+                pension: "$350.000 - $600.000 (Aprox. según grado)",
+                infraestructura: "Instalación de 3 pisos con patio multifuncional y enfermería.",
+                jornada: "Mañana / Tarde",
+                direccion: "Carrera 77 A # 65 Sur - 42",
+                telefono: "(601) 790 1155",
+                whatsapp: "+57 310 987 1234",
+                convenioSena: "No",
+                equipamiento: "Cancha múltiple, Sala de informática, Laboratorio de biología."
+            },
+            {
+                id: 80,
+                nombre: "Gimnasio Nueva Andalucía",
+                tipo: "Privado",
+                barrio: "Bosa Andalucía",
+                pension: "$320.000 - $570.000 (Aprox. según grado)",
+                infraestructura: "Edificación de 3 niveles con patio central cubierto.",
+                jornada: "Mañana",
+                direccion: "Calle 56 Sur # 81 B - 20",
+                telefono: "(601) 791 7788",
+                whatsapp: "+57 312 345 9876",
+                convenioSena: "No",
+                equipamiento: "Cancha de voleibol y baloncesto, Sala de computación, Biblioteca."
+            },
+            {
+                id: 81,
+                nombre: "Gimnasio Psicopedagógico Siglo XXI",
+                tipo: "Privado",
+                barrio: "Bosa El Recreo",
+                pension: "$420.000 - $720.000 (Aprox. según grado)",
+                infraestructura: "Edificio moderno de 4 pisos, laboratorio de idiomas y áreas deportivas.",
+                jornada: "Mañana",
+                direccion: "Carrera 101 # 73 Sur - 08",
+                telefono: "(601) 792 3344",
+                whatsapp: "+57 316 456 7890",
+                convenioSena: "Sí (Técnico en Diseño Digital)",
+                equipamiento: "Cancha múltiple, Laboratorio de tecnología, Sala bilingüe, Biblioteca amplia."
+            },
+            {
+                id: 82,
+                nombre: "Instituto Álvaro Mutis",
+                tipo: "Privado",
+                barrio: "Bosa Nova",
+                pension: "$330.000 - $580.000 (Aprox. según grado)",
+                infraestructura: "Sede de 3 niveles con patio deportivo y taller de artes.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 61 Sur # 85 - 19",
+                telefono: "(601) 793 6611",
+                whatsapp: "+57 318 234 5678",
+                convenioSena: "No",
+                equipamiento: "Cancha de microfútbol, Sala de informática, Taller de expresión artística."
+            },
+            {
+                id: 83,
+                nombre: "Instituto Clara Fey",
+                tipo: "Privado",
+                barrio: "Bosa Centro",
+                pension: "$360.000 - $610.000 (Aprox. según grado)",
+                infraestructura: "Sede religiosa-educativa tradicional con amplio capilla-auditorio y patios.",
+                jornada: "Mañana",
+                direccion: "Carrera 80 C # 65 Sur - 12",
+                telefono: "(601) 794 8822",
+                whatsapp: "+57 311 890 1234",
+                convenioSena: "No",
+                equipamiento: "Cancha múltiple, Capilla, Biblioteca institucional, Laboratorio de química."
+            },
+            {
+                id: 84,
+                nombre: "Instituto Gerardo Valencia Cano",
+                tipo: "Privado",
+                barrio: "Bosa El Porvenir",
+                pension: "$300.000 - $530.000 (Aprox. según grado)",
+                infraestructura: "Edificación propia de 3 pisos con áreas comunitarias y deportivas.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 54 Sur # 100 - 33",
+                telefono: "(601) 795 2299",
+                whatsapp: "+57 313 678 9012",
+                convenioSena: "Sí (Técnico en Asistencia Administrativa)",
+                equipamiento: "Cancha múltiple, Sala de computación, Laboratorio de física."
+            },
+            {
+                id: 85,
+                nombre: "Instituto Guimarc",
+                tipo: "Privado",
+                barrio: "Bosa La Libertad",
+                pension: "$310.000 - $550.000 (Aprox. según grado)",
+                infraestructura: "Sede de 2 niveles con patio lúdico y área de talleres.",
+                jornada: "Mañana / Tarde",
+                direccion: "Carrera 88 C # 71 Sur - 24",
+                telefono: "(601) 796 5500",
+                whatsapp: "+57 315 890 1234",
+                convenioSena: "No",
+                equipamiento: "Sala de informática, Laboratorio de ciencias, Cancha de baloncesto."
+            },
+            {
+                id: 86,
+                nombre: "Instituto Juan Pablo II",
+                tipo: "Privado",
+                barrio: "Bosa Escocia",
+                pension: "$350.000 - $600.000 (Aprox. según grado)",
+                infraestructura: "Edificio de 3 plantas, cancha cubierta y salón múltiple.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 57 Sur # 86 B - 05",
+                telefono: "(601) 797 1144",
+                whatsapp: "+57 317 234 5678",
+                convenioSena: "Sí (Técnico en Secretariado Auxiliar)",
+                equipamiento: "Cancha techada, Sala de sistemas, Biblioteca escolar, Laboratorio."
+            },
+            {
+                id: 87,
+                nombre: "Instituto Laberinto de la Cultura",
+                tipo: "Privado",
+                barrio: "Bosa La Estación",
+                pension: "$380.000 - $660.000 (Aprox. según grado)",
+                infraestructura: "Sede con enfoque en talleres culturales, teatro interior y salas polivalentes.",
+                jornada: "Mañana / Tarde",
+                direccion: "Carrera 77 B # 63 Sur - 10",
+                telefono: "(601) 798 7733",
+                whatsapp: "+57 319 456 7890",
+                convenioSena: "No",
+                equipamiento: "Teatrino interior, Salón de danza y música, Sala de cómputo, Biblioteca."
+            },
+            {
+                id: 88,
+                nombre: "Instituto Técnico Comercial Marmatos / Instituto Moderno Bosa",
+                tipo: "Privado",
+                barrio: "Bosa Centro",
+                pension: "$340.000 - $590.000 (Aprox. según grado)",
+                infraestructura: "Sede de 4 pisos equipada con laboratorios empresariales y contables.",
+                jornada: "Mañana / Tarde / Sabatina",
+                direccion: "Calle 65 Sur # 80 B - 28",
+                telefono: "(601) 799 4488",
+                whatsapp: "+57 314 901 2345",
+                convenioSena: "Sí (Técnico en Contabilidad y Finanzas)",
+                equipamiento: "2 Salas de sistemas, Laboratorio empresarial, Cancha deportiva, Biblioteca."
+            },
+            {
+                id: 89,
+                nombre: "Instituto Académico La Portada",
+                tipo: "Privado",
+                barrio: "Bosa La Portada",
+                pension: "$290.000 - $510.000 (Aprox. según grado)",
+                infraestructura: "Sede institucional de 2 niveles con patio deportivo y cafetería.",
+                jornada: "Mañana",
+                direccion: "Carrera 82 # 59 Sur - 14",
+                telefono: "(601) 800 2211",
+                whatsapp: "+57 312 890 1234",
+                convenioSena: "No",
+                equipamiento: "Cancha múltiple, Sala de computación, Laboratorio de ciencias."
+            },
+            {
+                id: 90,
+                nombre: "Liceo Antonio Bolaños",
+                tipo: "Privado",
+                barrio: "Bosa Piamonte",
+                pension: "$330.000 - $570.000 (Aprox. según grado)",
+                infraestructura: "Edificio propio de 3 plantas con área administrativa y auditorio.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 68 Sur # 78 A - 33",
+                telefono: "(601) 801 6655",
+                whatsapp: "+57 310 123 4567",
+                convenioSena: "No",
+                equipamiento: "Cancha deportiva, Sala de sistemas, Biblioteca escolar."
+            },
+            {
+                id: 91,
+                nombre: "Liceo Antonio de Toledo",
+                tipo: "Privado",
+                barrio: "Bosa Brasil",
+                pension: "$360.000 - $630.000 (Aprox. según grado)",
+                infraestructura: "Edificación de 3 niveles con patio pavimentado y zona de juegos.",
+                jornada: "Mañana",
+                direccion: "Carrera 88 C # 53 Sur - 40",
+                telefono: "(601) 802 8899",
+                whatsapp: "+57 315 345 6789",
+                convenioSena: "Sí (Técnico en Gestión Administrativa)",
+                equipamiento: "Cancha múltiple, Sala de computación, Laboratorio de ciencias."
+            },
+            {
+                id: 92,
+                nombre: "Liceo Ciudad Capital",
+                tipo: "Privado",
+                barrio: "Bosa La Libertad",
+                pension: "$370.000 - $640.000 (Aprox. según grado)",
+                infraestructura: "Sede moderna con terraza polideportiva, aulas digitales e iluminación natural.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 72 Sur # 89 C - 12",
+                telefono: "(601) 803 3311",
+                whatsapp: "+57 318 678 9012",
+                convenioSena: "No",
+                equipamiento: "Cancha de césped sintético pequeña, Sala de informática, Laboratorio de química."
+            },
+            {
+                id: 93,
+                nombre: "Liceo Cultural Luis Enrique Osorio",
+                tipo: "Privado",
+                barrio: "Bosa Bosa Nova",
+                pension: "$320.000 - $560.000 (Aprox. según grado)",
+                infraestructura: "Sede con orientación cultural, salón de actos, aulas temáticas.",
+                jornada: "Mañana",
+                direccion: "Carrera 84 A # 61 Sur - 29",
+                telefono: "(601) 804 7744",
+                whatsapp: "+57 311 456 7890",
+                convenioSena: "No",
+                equipamiento: "Salón de teatro y música, Sala de sistemas, Biblioteca, Parque infantil."
+            },
+            {
+                id: 94,
+                nombre: "Liceo Ernesto Cardenal",
+                tipo: "Privado",
+                barrio: "Bosa San Bernardino",
+                pension: "$300.000 - $520.000 (Aprox. según grado)",
+                infraestructura: "Edificación de 2 plantas con patio descubierto para actividades físicas.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 81 Sur # 88 C - 15",
+                telefono: "(601) 805 1100",
+                whatsapp: "+57 313 890 1234",
+                convenioSena: "No",
+                equipamiento: "Cancha de baloncesto, Sala de informática, Laboratorio integrado."
+            },
+            {
+                id: 95,
+                nombre: "Liceo Manuel Elkin Patarroyo",
+                tipo: "Privado",
+                barrio: "Bosa El Porvenir",
+                pension: "$380.000 - $670.000 (Aprox. según grado)",
+                infraestructura: "Sede con énfasis en ciencias, laboratorios dotados y edificio de 3 pisos.",
+                jornada: "Mañana",
+                direccion: "Carrera 95 # 52 Sur - 18",
+                telefono: "(601) 806 5522",
+                whatsapp: "+57 316 123 4567",
+                convenioSena: "Sí (Técnico en Química Industrial y Laboratorio)",
+                equipamiento: "2 Laboratorios de ciencias avanzadas, Sala de cómputo, Cancha deportiva, Biblioteca."
+            },
+            {
+                id: 96,
+                nombre: "Liceo Mi Infancia Creativa",
+                tipo: "Privado",
+                barrio: "Bosa La Estación",
+                pension: "$280.000 - $480.000 (Aprox. según grado)",
+                infraestructura: "Sede infantil especializada de 2 niveles con diseño lúdico.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 63 Sur # 77 C - 08",
+                telefono: "(601) 807 9933",
+                whatsapp: "+57 320 890 1234",
+                convenioSena: "No",
+                equipamiento: "Gimnasio de estimulación temprana, Salón de artes, Parque infantil, Sala de lectura."
+            },
+            {
+                id: 97,
+                nombre: "Liceo Moderno Betania",
+                tipo: "Privado",
+                barrio: "Bosa Betania",
+                pension: "$340.000 - $590.000 (Aprox. según grado)",
+                infraestructura: "Instalación de 3 pisos con patio cubierto y áreas recreativas.",
+                jornada: "Mañana",
+                direccion: "Carrera 87 # 56 Sur - 30",
+                telefono: "(601) 808 4400",
+                whatsapp: "+57 322 345 6789",
+                convenioSena: "No",
+                equipamiento: "Cancha de microfútbol, Sala de sistemas, Biblioteca."
+            },
+            {
+                id: 98,
+                nombre: "Liceo Moderno Gran París",
+                tipo: "Privado",
+                barrio: "Bosa Gran Colombiano",
+                pension: "$310.000 - $540.000 (Aprox. según grado)",
+                infraestructura: "Sede de 2 niveles con patio interior y salón de eventos.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 70 Sur # 82 C - 19",
+                telefono: "(601) 809 2288",
+                whatsapp: "+57 324 123 4567",
+                convenioSena: "No",
+                equipamiento: "Cancha deportiva, Sala de informática, Laboratorio de ciencias."
+            },
+            {
+                id: 99,
+                nombre: "Liceo Moderno Grinbehy",
+                tipo: "Privado",
+                barrio: "Bosa Laureles",
+                pension: "$390.000 - $680.000 (Aprox. según grado)",
+                infraestructura: "Edificio ecológico con paneles solares, 3 niveles y patio ajardinado.",
+                jornada: "Mañana",
+                direccion: "Carrera 80 I # 74 Sur - 22",
+                telefono: "(601) 810 6611",
+                whatsapp: "+57 310 456 7890",
+                convenioSena: "Sí (Técnico en Gestión Ambiental)",
+                equipamiento: "Invernadero escolar, Sala de cómputo, Cancha deportiva, Biblioteca."
+            },
+            {
+                id: 100,
+                nombre: "Liceo Moderno Salvador Allende",
+                tipo: "Privado",
+                barrio: "Bosa San Antonio",
+                pension: "$300.000 - $510.000 (Aprox. según grado)",
+                infraestructura: "Sede institucional de 2 pisos con patio cubierto.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 71 A Sur # 88 C - 04",
+                telefono: "(601) 811 3377",
+                whatsapp: "+57 312 678 9012",
+                convenioSena: "No",
+                equipamiento: "Cancha múltiple, Sala de computación, Laboratorio de química."
+            },
+            {
+                id: 101,
+                nombre: "Liceo Nuevos Horizontes",
+                tipo: "Privado",
+                barrio: "Bosa Carbonell",
+                pension: "$330.000 - $570.000 (Aprox. según grado)",
+                infraestructura: "Edificio de 3 plantas con aula máxima y áreas de recreación.",
+                jornada: "Mañana",
+                direccion: "Carrera 78 # 71 Sur - 40",
+                telefono: "(601) 812 8844",
+                whatsapp: "+57 314 901 2345",
+                convenioSena: "No",
+                equipamiento: "Cancha de baloncesto, Sala de informática, Biblioteca."
+            },
+            {
+                id: 102,
+                nombre: "Liceo Octavio Paz",
+                tipo: "Privado",
+                barrio: "Bosa Islandia",
+                pension: "$350.000 - $600.000 (Aprox. según grado)",
+                infraestructura: "Sede de 3 niveles con áreas dedicadas a la lectura y creación literaria.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 69 S # 86 A - 12",
+                telefono: "(601) 813 2255",
+                whatsapp: "+57 317 345 6789",
+                convenioSena: "No",
+                equipamiento: "Biblioteca amplia, Sala de informática, Cancha de microfútbol, Laboratorio."
+            },
+            {
+                id: 103,
+                nombre: "Liceo Pedagógico El Recreo",
+                tipo: "Privado",
+                barrio: "Bosa El Recreo",
+                pension: "$400.000 - $700.000 (Aprox. según grado)",
+                infraestructura: "Sede moderna de 4 pisos frente a parque vecinal, auditorio y terraza deportiva.",
+                jornada: "Mañana",
+                direccion: "Carrera 97 D # 75 Sur - 20",
+                telefono: "(601) 814 7799",
+                whatsapp: "+57 319 678 9012",
+                convenioSena: "Sí (Técnico en Programación de Software)",
+                equipamiento: "Cancha sintética, Sala de informática, Laboratorio de ciencias, Comedor."
+            },
+            {
+                id: 104,
+                nombre: "Liceo Pedagógico Forjadores del Futuro",
+                tipo: "Privado",
+                barrio: "Bosa Nova",
+                pension: "$320.000 - $550.000 (Aprox. según grado)",
+                infraestructura: "Edificio de 3 niveles con patio polideportivo.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 60 Sur # 83 - 15",
+                telefono: "(601) 815 1133",
+                whatsapp: "+57 311 234 5678",
+                convenioSena: "No",
+                equipamiento: "Cancha de voleibol, Sala de cómputo, Biblioteca, Laboratorio."
+            },
+            {
+                id: 105,
+                nombre: "Liceo Preescolar La Abeja Maya",
+                tipo: "Privado",
+                barrio: "Bosa Centro",
+                pension: "$270.000 - $450.000 (Aprox. según grado)",
+                infraestructura: "Sede infantil en casa adaptada de 2 niveles con área de juegos blandos.",
+                jornada: "Mañana / Tarde",
+                direccion: "Carrera 80 A # 63 Sur - 18",
+                telefono: "(601) 816 6622",
+                whatsapp: "+57 313 567 8901",
+                convenioSena: "No",
+                equipamiento: "Parque infantil techado, Salón de actividades lúdicas, Comedor infantil."
+            },
+            {
+                id: 106,
+                nombre: "Liceo Psicopedagógico El Carmelo",
+                tipo: "Privado",
+                barrio: "Bosa Piamonte",
+                pension: "$360.000 - $620.000 (Aprox. según grado)",
+                infraestructura: "Sede propia de 3 pisos con capilla y patios recreativos.",
+                jornada: "Mañana",
+                direccion: "Calle 67 Sur # 78 C - 09",
+                telefono: "(601) 817 9988",
+                whatsapp: "+57 315 890 1234",
+                convenioSena: "No",
+                equipamiento: "Cancha múltiple, Sala de informática, Laboratorio de biología, Capilla."
+            },
+            {
+                id: 107,
+                nombre: "Liceo Real España",
+                tipo: "Privado",
+                barrio: "Bosa Brasilia",
+                pension: "$340.000 - $580.000 (Aprox. según grado)",
+                infraestructura: "Instalación de 3 niveles con salón de eventos y patio central.",
+                jornada: "Mañana / Tarde",
+                direccion: "Carrera 87 B # 52 Sur - 27",
+                telefono: "(601) 818 4411",
+                whatsapp: "+57 318 123 4567",
+                convenioSena: "No",
+                equipamiento: "Cancha de microfútbol, Sala de sistemas, Biblioteca escolar."
+            },
+            {
+                id: 108,
+                nombre: "Liceo San Pablo",
+                tipo: "Privado",
+                barrio: "Bosa San Pablo",
+                pension: "$310.000 - $530.000 (Aprox. según grado)",
+                infraestructura: "Edificación de 2 plantas con patio descubierto.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 68 Sur # 78 # 22",
+                telefono: "(601) 819 0055",
+                whatsapp: "+57 320 456 7890",
+                convenioSena: "No",
+                equipamiento: "Cancha múltiple, Sala de computación, Laboratorio de ciencias."
+            },
+            {
+                id: 109,
+                nombre: "Liceo Soma",
+                tipo: "Privado",
+                barrio: "Bosa La Estación",
+                pension: "$380.000 - $650.000 (Aprox. según grado)",
+                infraestructura: "Sede moderna enfocado en desarrollo psicomotriz y artístico, 3 pisos.",
+                jornada: "Mañana",
+                direccion: "Carrera 77 H # 62 Sur - 11",
+                telefono: "(601) 820 3399",
+                whatsapp: "+57 322 890 1234",
+                convenioSena: "No",
+                equipamiento: "Gimnasio deportivo, Sala de informática, Salón de danza, Biblioteca."
+            },
+            {
+                id: 110,
+                nombre: "Liceo y Jardín Infantil Fantasías de Piolín",
+                tipo: "Privado",
+                barrio: "Bosa Andalucía",
+                pension: "$260.000 - $430.000 (Aprox. según grado)",
+                infraestructura: "Casa infantil equipada de 2 pisos con piscina de pelotas y salas tematizadas.",
+                jornada: "Mañana / Tarde",
+                direccion: "Calle 55 Sur # 82 - 04",
+                telefono: "(601) 821 7722",
+                whatsapp: "+57 324 123 4567",
+                convenioSena: "No",
+                equipamiento: "Parque infantil interior, Salón lúdico, Sala de audiovisuales infantil."
+            },
+            {
+                id: 111,
+                nombre: "Fundación Humanista Erasmo de Rotterdam",
+                tipo: "Privado",
+                barrio: "Bosa Centro",
+                pension: "$350.000 - $610.000 (Aprox. según grado)",
+                infraestructura: "Sede de 3 niveles con salón comunal, biblioteca comunitaria y laboratorios.",
+                jornada: "Mañana / Tarde",
+                direccion: "Carrera 80 # 65 Sur - 45",
+                telefono: "(601) 822 5588",
+                whatsapp: "+57 310 678 9012",
+                convenioSena: "Sí (Técnico en Desarrollo Comunitario)",
+                equipamiento: "Biblioteca abierta, Sala de informática, Laboratorio de ciencias, Auditorio."
+            },
+            {
+                id: 112,
+                nombre: "Fundación Santo Tomás de Aquino – FUSANTEC",
+                tipo: "Privado",
+                barrio: "Bosa San Bernardino",
+                pension: "$320.000 - $570.000 (Aprox. según grado)",
+                infraestructura: "Sede técnica de 3 niveles con talleres de mecánica y electricidad.",
+                jornada: "Mañana / Tarde / Sabatina",
+                direccion: "Calle 80 Sur # 89 C - 10",
+                telefono: "(601) 823 1144",
+                whatsapp: "+57 312 901 2345",
+                convenioSena: "Sí (Técnico en Electricidad Industrial)",
+                equipamiento: "Talleres de formación técnica, 2 Salas de cómputo, Cancha múltiple."
+            },
+            {
+                id: 113,
+                nombre: "Liceo Divino Niño Jesús",
+                tipo: "Privado",
+                barrio: "Bosa Escocia",
+                pension: "$290.000 - $500.000 (Aprox. según grado)",
+                infraestructura: "Sede de 2 plantas con patio central cubierto.",
+                jornada: "Mañana / Tarde",
+                direccion: "Carrera 86 c # 56 Sur - 20",
+                telefono: "(601) 824 8833",
+                whatsapp: "+57 314 345 6789",
+                convenioSena: "No",
+                equipamiento: "Cancha de microfútbol, Sala de sistemas, Biblioteca básica."
+            },
+            {
+                id: 114,
+                nombre: "Liceo Falan",
+                tipo: "Privado",
+                barrio: "Bosa La Libertad",
+                pension: "$330.000 - $560.000 (Aprox. según grado)",
+                infraestructura: "Edificación tradicional de 3 pisos con zona de juegos y enfermería.",
+                jornada: "Mañana",
+                direccion: "Calle 74 Sur # 88 A - 05",
+                telefono: "(601) 825 4499",
+                whatsapp: "+57 317 678 9012",
+                convenioSena: "No",
+                equipamiento: "Cancha polideportiva, Sala de informática, Laboratorio integrado."
+            },
+            {
+                id: 115,
+                nombre: "Liceo Infantil Goofy",
+                tipo: "Privado",
+                barrio: "Bosa Bosa Nova",
+                pension: "$250.000 - $420.000 (Aprox. según grado)",
+                infraestructura: "Sede infantil adaptada de 2 plantas con zonas lúdicas temáticas.",
+                jornada: "Mañana / Tarde",
+                direccion: "Carrera 83 A # 60 Sur - 12",
+                telefono: "(601) 826 2200",
+                whatsapp: "+57 319 123 4567",
+                convenioSena: "No",
+                equipamiento: "Parque infantil, Sala de títeres y lectura, Comedor para preescolar."
+            }
+
+
+        ];
+
+        let currentView = 'cards';
+
+        function getBadgeClass(tipo) {
+            const t = tipo.toLowerCase();
+            if (t.includes('público') || t.includes('publico')) return 'público';
+            if (t.includes('privado')) return 'privado';
+            if (t.includes('administración') || t.includes('administracion') || t.includes('concesión') || t.includes('concesion')) return 'en-administración';
+            return 'público';
+        }
+
+        function renderData() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const sectorSelected = document.getElementById('sectorFilter').value.toLowerCase();
+
+            const filtered = colegiosDB.filter(c => {
+                if (!c.nombre) return false;
+                const matchSearch = c.nombre.toLowerCase().includes(query) || (c.barrio && c.barrio.toLowerCase().includes(query));
+                
+                let matchSector = sectorSelected === 'todos';
+                if (!matchSector) {
+                    const cType = c.tipo ? c.tipo.toLowerCase() : '';
+                    if (sectorSelected === 'público' || sectorSelected === 'publico') {
+                        matchSector = cType.includes('público') || cType.includes('publico');
+                    } else if (sectorSelected === 'privado') {
+                        matchSector = cType.includes('privado');
+                    } else if (sectorSelected.includes('administración') || sectorSelected.includes('administracion')) {
+                        matchSector = cType.includes('administración') || cType.includes('administracion') || cType.includes('concesión') || cType.includes('concesion');
+                    }
+                }
+                
+                return matchSearch && matchSector;
+            });
+
+            if (currentView === 'cards') {
+                renderCards(filtered);
+            } else {
+                renderTable(filtered);
+            }
+        }
+
+        function renderCards(list) {
+            const container = document.getElementById('cardsView');
+            container.innerHTML = '';
+            
+            if(list.length === 0) {
+                container.innerHTML = '<p style="grid-column: 1/-1; text-align:center; padding: 20px;">No se encontraron resultados.</p>';
+                return;
+            }
+
+            list.forEach(c => {
+                const badgeClass = getBadgeClass(c.tipo);
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div>
+                        <div class="card-header">
+                            <h3 class="card-title">${c.nombre}</h3>
+                            <span class="badge ${badgeClass}">${c.tipo}</span>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Barrio:</strong> ${c.barrio || 'N/A'}</p>
+                            <p><strong>Jornada:</strong> ${c.jornada || 'N/A'}</p>
+                            <p><strong>Pensión:</strong> ${c.pension || 'N/A'}</p>
+                        </div>
+                    </div>
+                    <button class="btn-detail" onclick="openModal(${c.id})">Ver Ficha Completa</button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function renderTable(list) {
+            const container = document.getElementById('tableView');
+            if(list.length === 0) {
+                container.innerHTML = '<p style="padding:20px; text-align:center;">No se encontraron resultados.</p>';
+                return;
+            }
+
+            let html = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Sector</th>
+                            <th>Barrio</th>
+                            <th>Jornada</th>
+                            <th>Pensión</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            list.forEach(c => {
+                const badgeClass = getBadgeClass(c.tipo);
+                html += `
+                    <tr>
+                        <td><strong>${c.nombre}</strong></td>
+                        <td><span class="badge ${badgeClass}">${c.tipo}</span></td>
+                        <td>${c.barrio || 'N/A'}</td>
+                        <td>${c.jornada || 'N/A'}</td>
+                        <td>${c.pension || 'N/A'}</td>
+                        <td><button class="btn-detail" style="margin:0; padding:6px 10px;" onclick="openModal(${c.id})">Ficha</button></td>
+                    </tr>
+                `;
+            });
+
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        function setView(view) {
+            currentView = view;
+            document.getElementById('btnCardsView').classList.toggle('active', view === 'cards');
+            document.getElementById('btnTableView').classList.toggle('active', view === 'table');
+            
+            document.getElementById('cardsView').style.display = view === 'cards' ? 'grid' : 'none';
+            document.getElementById('tableView').style.display = view === 'table' ? 'block' : 'none';
+            
+            renderData();
+        }
+
+        function openModal(id) {
+            const colegio = colegiosDB.find(c => c.id === id);
+            if(!colegio) return;
+
+            const badgeClass = getBadgeClass(colegio.tipo);
+
+            document.getElementById('mNombre').textContent = colegio.nombre || 'N/A';
+            document.getElementById('mTipo').textContent = colegio.tipo || 'N/A';
+            document.getElementById('mTipo').className = `badge ${badgeClass}`;
+            document.getElementById('mBarrio').textContent = colegio.barrio || 'N/A';
+            document.getElementById('mPension').textContent = colegio.pension || 'N/A';
+            document.getElementById('mJornada').textContent = colegio.jornada || 'N/A';
+            document.getElementById('mDireccion').textContent = colegio.direccion || 'N/A';
+            document.getElementById('mTelefono').textContent = colegio.telefono || 'N/A';
+            document.getElementById('mWhatsapp').textContent = colegio.whatsapp || 'N/A';
+            document.getElementById('mSena').textContent = colegio.convenioSena || 'N/A';
+            document.getElementById('mInfraestructura').textContent = colegio.infraestructura || 'N/A';
+            document.getElementById('mEquipamiento').textContent = colegio.equipamiento || 'N/A';
+
+            document.getElementById('modalOverlay').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').style.display = 'none';
+        }
+
+        // Event listeners
+        document.getElementById('searchInput').addEventListener('input', renderData);
+        document.getElementById('sectorFilter').addEventListener('change', renderData);
+
+        // Inicialización
+        renderData();
+    </script>
+</body>
+</html>
